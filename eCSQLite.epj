@@ -1,0 +1,260 @@
+{
+   "Version" : 0.2,
+   "ModuleName" : "eCSQLite",
+   "ModuleVersion" : "0.0.1",
+   "Options" : {
+      "Warnings" : "All",
+      "Optimization" : "None",
+      "PreprocessorDefinitions" : [
+         "SQLITE_ENABLE_RTREE=1",
+         "SQLITE_DEFAULT_LOCKING_MODE=1",
+         "SQLITE_OMIT_AUTHORIZATION"
+      ],
+      "TargetType" : "SharedLibrary",
+      "TargetFileName" : "eCSQLite",
+      "Libraries" : [
+         "ecrt"
+      ]
+   },
+   "Platforms" : [
+      {
+         "Name" : "linux",
+         "Options" : {
+            "Libraries" : [
+               "pthread",
+               "dl",
+               "sqlite3"
+            ]
+         }
+      },
+      {
+         "Name" : "apple",
+         "Options" : {
+            "Libraries" : [
+               "pthread",
+               "dl"
+            ]
+         }
+      },
+      {
+         "Name" : "win32",
+         "Options" : {
+            "IncludeDirs" : [
+               "../../../deps/libffi-3.4.4/i686-w64-mingw32/include",
+               "../../../deps/sqlite-3.41.0"
+            ],
+            "Libraries" : [
+               "gnurx-0"
+            ],
+            "LibraryDirs" : [
+               "../../../deps/libffi-3.4.4/obj/release.$(PLATFORM)$(COMPILER_SUFFIX)"
+            ]
+         }
+      }
+   ],
+   "Configurations" : [
+      {
+         "Name" : "Debug",
+         "Options" : {
+            "Debug" : true,
+            "PreprocessorDefinitions" : [
+               "_DEBUG"
+            ],
+            "FastMath" : false
+         }
+      },
+      {
+         "Name" : "Release",
+         "Options" : {
+            "Warnings" : "All",
+            "Debug" : false,
+            "NoLineNumbers" : true,
+            "Optimization" : "Speed",
+            "PreprocessorDefinitions" : [
+               "SQLITE_ENABLE_RTREE=1"
+            ],
+            "LibraryDirs" : [
+               "../../../obj/$(PLATFORM)/bin",
+               "../../../obj/$(PLATFORM)/lib"
+            ],
+            "FastMath" : true,
+            "PostbuildCommands" : [
+               "$(call cp,$(TARGET),../../../$(SODESTDIR))"
+            ],
+            "InstallCommands" : [
+               "$(call cp,$(TARGET),\"$(DESTLIBDIR)/ec/\")",
+               "$(if $(WINDOWS_HOST),,ln -sf $(LP)$(MODULE)$(SOV) $(DESTLIBDIR)/ec/$(LP)$(MODULE)$(SO).0)",
+               "$(if $(WINDOWS_HOST),,ln -sf $(LP)$(MODULE)$(SOV) $(DESTLIBDIR)/ec/$(LP)$(MODULE)$(SO))"
+            ]
+         }
+      },
+      {
+         "Name" : "MemoryGuard",
+         "Options" : {
+            "Debug" : true,
+            "MemoryGuard" : true,
+            "PreprocessorDefinitions" : [
+               "_DEBUG"
+            ],
+            "FastMath" : false
+         }
+      },
+      {
+         "Name" : "Static",
+         "Options" : {
+            "NoLineNumbers" : true,
+            "Optimization" : "Speed",
+            "PreprocessorDefinitions" : [
+               "ECERE_STATIC"
+            ],
+            "TargetType" : "StaticLibrary",
+            "TargetFileName" : "EDASQLiteStatic",
+            "CompilerOptions" : [
+               "-mmmx",
+               "-msse",
+               "-msse2",
+               "-msse3",
+               "-msse4"
+            ],
+            "FastMath" : true
+         }
+      },
+      {
+         "Name" : "Android",
+         "Options" : {
+            "NoLineNumbers" : true,
+            "Optimization" : "Speed",
+            "FastMath" : true
+         },
+         "Platforms" : [
+            {
+               "Name" : "linux",
+               "Options" : {
+                  "NoLineNumbers" : true,
+                  "Optimization" : "Speed",
+                  "Libraries" : [
+                     "pthread",
+                     "dl"
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "Name" : "Lumin",
+         "Options" : {
+            "NoLineNumbers" : true,
+            "Optimization" : "Speed",
+            "PreprocessorDefinitions" : [
+               "ECERE_STATIC"
+            ],
+            "TargetType" : "StaticLibrary",
+            "TargetFileName" : "EDASQLiteLuminStatic",
+            "CompilerOptions" : [
+               "-mmmx",
+               "-msse3",
+               "-msse4"
+            ],
+            "FastMath" : true
+         }
+      },
+      {
+         "Name" : "Emscripten",
+         "Options" : {
+            "Optimization" : "Speed",
+            "PreprocessorDefinitions" : [
+               "ECERE_STATIC",
+               "IMPORT_STATIC=static"
+            ],
+            "TargetType" : "StaticLibrary",
+            "CompilerOptions" : [
+
+            ],
+            "FastMath" : true
+         }
+      }
+   ],
+   "Files" : [
+      {
+         "FileName" : "$(ECERE_SDK_SRC)/deps/sqlite-3.41.0/sqlite3.c",
+         "Options" : {
+            "FastMath" : false
+         },
+         "Configurations" : [
+            {
+               "Name" : "Android",
+               "Platforms" : [
+                  {
+                     "Name" : "linux",
+                     "Options" : {
+                        "ExcludeFromBuild" : false
+                     }
+                  }
+               ]
+            },
+            {
+               "Name" : "Lumin",
+               "Platforms" : [
+                  {
+                     "Name" : "linux",
+                     "Options" : {
+                        "ExcludeFromBuild" : false
+                     }
+                  }
+               ]
+            },
+            {
+               "Name" : "Emscripten",
+               "Platforms" : [
+                  {
+                     "Name" : "linux",
+                     "Options" : {
+                        "ExcludeFromBuild" : false
+                     }
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "FileName" : "$(ECERE_SDK_SRC)/deps/sqlite-3.41.0/sqlite3.h",
+         "Platforms" : [
+            {
+               "Name" : "linux",
+               "Options" : {
+                  "ExcludeFromBuild" : true
+               }
+            }
+         ]
+      },
+      {
+         "FileName" : "sqliteDB.ec",
+         "Configurations" : [
+            {
+               "Name" : "Android",
+               "Platforms" : [
+                  {
+                     "Name" : "linux",
+                     "Options" : {
+                        "FastMath" : true
+                     }
+                  }
+               ]
+            }
+         ]
+      }
+   ],
+   "ResourcesPath" : "",
+   "Resources" : [
+      {
+         "Folder" : "locale",
+         "Files" : [
+            "es.mo",
+            "he.mo",
+            "pt_BR.mo",
+            "ru.mo",
+            "zh_CN.mo"
+         ]
+      }
+   ]
+}
