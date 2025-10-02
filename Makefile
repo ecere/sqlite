@@ -122,7 +122,14 @@ ECFLAGS += \
 
 ifdef WINDOWS_TARGET
 
+OFLAGS += -static-libgcc
+
 ifndef STATIC_LIBRARY_TARGET
+
+ifndef STATIC_LIBRARY_TARGET
+LIBS += $(call _L,gnurx-0)
+endif
+
 endif
 
 else
